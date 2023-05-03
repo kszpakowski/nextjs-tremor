@@ -1,15 +1,12 @@
 'use client';
 
 import { Grid, Col, Card, Flex, TextInput, Text, Title, Button, DateRangePicker } from "@tremor/react";
-import Question from "./Question";
-import { useState } from "react";
 
-type Question = {
-    id: string;
-    title: string;
-    choices?: Array<string>;
-    order: number;
-}
+import { useState } from "react";
+import EditModal from "./EditModal";
+import { Question } from "./types";
+import QuestionItem from "./QuestionItem";
+import DeleteModal from "./DeleteModal";
 
 const initialQuestions: Array<Question> = [{
     id: "1",
@@ -31,13 +28,15 @@ const initialQuestions: Array<Question> = [{
 
 export default function NewSurveysPage() {
     const [questions, setQuestions] = useState(initialQuestions)
+    const [deleteQuestion, setDeleteQuestion] = useState<Question | null>(null)
+    const [editQuestion, setEditQuestion] = useState<Question | null>(null)
 
     const moveUp = (question: { id: string, title: string, order: number }) => {
         if (question.order === 0) {
             return;
         }
 
-        const newOrder = question.order -1;
+        const newOrder = question.order - 1;
 
         const newQuestions = questions.map(q => {
 
@@ -49,15 +48,15 @@ export default function NewSurveysPage() {
             return q;
         })
 
-        setQuestions(newQuestions.sort((a, b) => a.order - b.order))
+        setQuestions(newQuestions)
     }
 
     const moveDown = (question: Question) => {
-        if (question.order === questions.length-1) {
+        if (question.order === questions.length - 1) {
             return;
         }
 
-        const newOrder = question.order +1;
+        const newOrder = question.order + 1;
         const previousOrder = question.order;
 
         const newQuestions = questions.map(q => {
@@ -70,13 +69,13 @@ export default function NewSurveysPage() {
             return q;
         })
 
-        setQuestions(newQuestions.sort((a, b) => a.order - b.order))
+        setQuestions(newQuestions)
     }
 
-    const remove = (question: Question) => {
-        console.log(`Removing ${question.id}..`)
+    const remove = (id: string) => {
+        console.log(`Removing ${id}..`)
 
-        const newQuestions = questions.filter(q => q.id !== question.id)
+        const newQuestions = questions.filter(q => q.id !== id)
 
         setQuestions(newQuestions)
     }
@@ -105,18 +104,32 @@ export default function NewSurveysPage() {
                 <Col numColSpan={3} numColSpanLg={3}>
                     <Card className='space-y-8'>
                         {questions
+                            .sort((a, b) => a.order - b.order)
                             .map(question => (
-                                <Question
+                                <QuestionItem
                                     question={question}
-                                    onEdit={(id) => console.log(`Editing ${id}`)}
-                                    onDelete={remove}
+                                    onEdit={setEditQuestion}
+                                    onDelete={setDeleteQuestion}
                                     onOrderUp={moveUp}
                                     onOrderDown={moveDown}
                                     key={question.id}
-                                ></Question>
+                                ></QuestionItem>
                             ))}
                     </Card>
                 </Col>
+                {deleteQuestion && (
+                    <DeleteModal
+                        question={deleteQuestion}
+                        onClose={() => setDeleteQuestion(null)}
+                        onDelete={() => { remove(deleteQuestion.id); setDeleteQuestion(null); }}></DeleteModal>
+                )}
+
+                {editQuestion && (
+                    <EditModal
+                        question={editQuestion}
+                        onClose={() => setEditQuestion(null)}></EditModal>
+                )}
+
             </Grid>
         </main>
 

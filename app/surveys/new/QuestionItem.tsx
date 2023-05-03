@@ -2,15 +2,9 @@
 
 import { ArrowUpCircleIcon, ArrowDownCircleIcon, MinusCircleIcon, PencilIcon, EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline";
 import { Flex, Toggle, ToggleItem, Icon, Text, TextInput } from "@tremor/react";
+import { Question } from "./types";
 
-type Question = {
-    id: string;
-    title: string;
-    choices?: Array<string>;
-    order:number;
-}
-
-type QuestionProps = {
+type QuestionItemProps = {
     question: Question;
     onEdit?: (question: Question) => void;
     onDelete?: (question: Question) => void;
@@ -18,7 +12,7 @@ type QuestionProps = {
     onOrderDown?: (question: Question) => void;
 }
 
-export default function Question(props: QuestionProps) {
+export default function QuestionItem(props: QuestionItemProps) {
     const { question, onEdit, onOrderDown, onOrderUp, onDelete } = props;
     return (
         <Flex alignItems="start">
