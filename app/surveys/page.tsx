@@ -169,7 +169,7 @@ export default function SurveysListPage() {
 
       <Grid className="gap-6" numColsSm={2} numColsLg={3}>
         {surveys().map((item) => (
-          <Link href={'/surveys/'+item.id}>
+          <Link href={'/surveys/'+item.id} key={item.id}>
             <SurveyListItem survey={item} key={item.id} color={color}></SurveyListItem>
           </Link>
         ))}
