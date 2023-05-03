@@ -2,8 +2,16 @@
 
 import { Grid, Col, Card, Flex, TextInput, Text, Title, Button, DateRangePicker } from "@tremor/react";
 import Question from "./Question";
+import { useState } from "react";
 
-const questions = [{
+type Question = {
+    id: string;
+    title: string;
+    choices?: Array<string>;
+    order: number;
+}
+
+const initialQuestions: Array<Question> = [{
     id: "1",
     order: 0,
     title: "Jak oceniasz proces logowania do portalu ubezpieczeniowego?",
@@ -22,6 +30,57 @@ const questions = [{
 }]
 
 export default function NewSurveysPage() {
+    const [questions, setQuestions] = useState(initialQuestions)
+
+    const moveUp = (question: { id: string, title: string, order: number }) => {
+        if (question.order === 0) {
+            return;
+        }
+
+        const newOrder = question.order -1;
+
+        const newQuestions = questions.map(q => {
+
+            if (q.id === question.id) {
+                q.order = newOrder;
+            } else if (q.order === newOrder) {
+                q.order = question.order;
+            }
+            return q;
+        })
+
+        setQuestions(newQuestions.sort((a, b) => a.order - b.order))
+    }
+
+    const moveDown = (question: Question) => {
+        if (question.order === questions.length-1) {
+            return;
+        }
+
+        const newOrder = question.order +1;
+        const previousOrder = question.order;
+
+        const newQuestions = questions.map(q => {
+
+            if (q.id === question.id) {
+                q.order = newOrder;
+            } else if (q.order === newOrder) {
+                q.order = previousOrder;
+            }
+            return q;
+        })
+
+        setQuestions(newQuestions.sort((a, b) => a.order - b.order))
+    }
+
+    const remove = (question: Question) => {
+        console.log(`Removing ${question.id}..`)
+
+        const newQuestions = questions.filter(q => q.id !== question.id)
+
+        setQuestions(newQuestions)
+    }
+
     return (
         <main className="p-4 md:p-10 mx-auto">
             <Grid className="mb-6 gap-6" numColsSm={4} numColsLg={4}>
@@ -45,17 +104,17 @@ export default function NewSurveysPage() {
                 </Col>
                 <Col numColSpan={3} numColSpanLg={3}>
                     <Card className='space-y-8'>
-                        {questions.sort((a,b) => a.order - b.order).map(question => (
-                            <Question
-                                id={question.id}
-                                key={question.id}
-                                title={question.title}
-                                choices={question.choices}
-                                onEdit={(id) => console.log(`Editing ${id}`)}
-                                onDelete={(id) => console.log(`Deleting ${id}`)}
-                                onOrderUp={(id) => console.log(`Moving ${id} up`)}
-                                onOrderDown={(id) => console.log(`Moving ${id} down`)}></Question>
-                        ))}
+                        {questions
+                            .map(question => (
+                                <Question
+                                    question={question}
+                                    onEdit={(id) => console.log(`Editing ${id}`)}
+                                    onDelete={remove}
+                                    onOrderUp={moveUp}
+                                    onOrderDown={moveDown}
+                                    key={question.id}
+                                ></Question>
+                            ))}
                     </Card>
                 </Col>
             </Grid>
