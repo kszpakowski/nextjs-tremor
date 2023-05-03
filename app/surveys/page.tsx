@@ -1,6 +1,6 @@
 'use client';
 
-import { MagnifyingGlassIcon, CheckIcon, StopIcon, PlayIcon, ArchiveBoxIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, CheckIcon, StopIcon, PlayIcon, ArchiveBoxIcon, ArrowDownCircleIcon } from '@heroicons/react/24/outline';
 import { Card, Text, Flex, Grid, TextInput, Bold, Col, Toggle, ToggleItem } from '@tremor/react';
 import { useState } from 'react';
 import SurveyListItem from './SurveyListItem';
@@ -139,7 +139,7 @@ export default function SurveysListPage() {
 
   const [value, setValue] = useState("all");
 
-  const surveys = () => categories.filter(filters[value])
+  const surveys = () => categories.filter(filters[value as keyof typeof filters])
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
@@ -158,7 +158,10 @@ export default function SurveysListPage() {
                 <ToggleItem value="completed" text="Zakończone" icon={StopIcon} />
                 <ToggleItem value="archived" text="Zarchiwizowane" icon={ArchiveBoxIcon} />
               </Toggle>
-              <Text><Bold>{surveys().length}</Bold>{(surveysTranslation(surveys().length))}</Text>
+              <Toggle defaultValue="last_updated" color={color} onValueChange={console.log}>
+                <ToggleItem value="last_updated" text="Ostatnio zaktualizowane" icon={ArrowDownCircleIcon}/>
+                <ToggleItem value="last_finished" text="Ostatnio zakończone" />
+              </Toggle>
             </Flex>
           </Card>
         </Col>

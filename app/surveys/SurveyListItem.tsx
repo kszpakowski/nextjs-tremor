@@ -26,6 +26,8 @@ type SurveyListItemProps = {
 const dataFormatter = (number: number) =>
   Intl.NumberFormat('us').format(number).toString();
 
+// const labelFormatter = ()
+
 export default function SurveyListItem(props: SurveyListItemProps){
 
 
@@ -53,6 +55,7 @@ export default function SurveyListItem(props: SurveyListItemProps){
               colors={[color]}
               valueFormatter={dataFormatter}
 
+              showGridLines={false}
               showXAxis={false}
               showYAxis={false}
               showLegend={false}
