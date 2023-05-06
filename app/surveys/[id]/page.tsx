@@ -1,6 +1,6 @@
-import { Grid, Col, Card, Title, Text, Divider } from "@tremor/react"
+import { Grid, Col } from "@tremor/react"
 import { api } from "../../../lib/api"
-import Tabs from "./Tabs"
+import Tabs from "./components/Tabs"
 
 export default async function NewSurveysPage({ params }: {
     params: { id: string }

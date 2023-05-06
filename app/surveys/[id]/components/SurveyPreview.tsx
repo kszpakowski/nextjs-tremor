@@ -1,7 +1,7 @@
 "use client"
 
 import { Text, TextInput, Flex } from "@tremor/react";
-import { Survey } from "../../../lib/api";
+import { Survey } from "../../../../lib/api";
 
 export default function SurveyPreview(props: { survey: Survey }) {
     const { survey } = props;

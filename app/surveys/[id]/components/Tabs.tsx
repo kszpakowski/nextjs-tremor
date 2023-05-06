@@ -2,9 +2,9 @@
 
 import { Card, Tab, TabList, Title } from "@tremor/react";
 import { useState } from "react";
-import { Survey } from "../../../lib/api";
 import SurveyPreview from "./SurveyPreview";
 import SurveyEditor from "./SurveyEditor";
+import { Survey } from "../../../../lib/api";
 
 export default function Tabs(props: { survey: Survey }) {
     const [currentTab, setCurrentTab] = useState("preview")

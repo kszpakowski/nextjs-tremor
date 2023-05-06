@@ -23,6 +23,7 @@ type Survey = {
 type SurveyListItemProps = {
     survey: Survey,
     color: 'red' | 'blue' | 'amber';
+    showChart?: boolean
 }
 
 const dataFormatter = (number: number) =>
@@ -56,7 +57,7 @@ const progressFn = (survey: Survey): number => {
 export default function SurveyListItem(props: SurveyListItemProps) {
 
 
-    const { survey, color } = props;
+    const { survey, color, showChart } = props;
     const progress = progressFn(survey)
 
     return (
@@ -72,8 +73,8 @@ export default function SurveyListItem(props: SurveyListItemProps) {
                 <Text className="truncate">{dateFormatter(survey.startDate)}</Text>
                 <Text className="truncate">{dateFormatter(survey.endDate)}</Text>
             </Flex>
-            <ProgressBar percentageValue={progress} color={color} className="mt-3" tooltip={`${progress}%`}/>
-            <AreaChart
+            <ProgressBar percentageValue={progress} color={color} className="mt-3" tooltip={`${progress}%`} />
+            {showChart && (<AreaChart
                 className="h-48 mt-4"
                 data={survey.chartdata ? survey.chartdata : []}
                 index="date"
@@ -85,7 +86,8 @@ export default function SurveyListItem(props: SurveyListItemProps) {
                 showXAxis={false}
                 showYAxis={false}
                 showLegend={false}
-            />
+            />)}
+
             <Flex
                 className="space-x-3 mt-4"
                 justifyContent="between"
