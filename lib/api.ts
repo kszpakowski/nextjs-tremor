@@ -2,6 +2,9 @@ const apiToken = process.env.API_TOKEN
 const baseUrl = process.env.API_URL
 const headers = { Authorization: `Bearer ${apiToken}` }
 
+//todo implement fetch wrapper
+const fetchConfig = { headers, next: { revalidate: 10 }, }
+
 const handleErrors = (res: Response) => {
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
@@ -53,7 +56,7 @@ type Survey = {
 export const api = {
 
     fetchSurveys: async (): Promise<PageResponse<Survey>> => {
-        const res = await fetch(`${baseUrl}/surveys/?populate=*`, { headers })
+        const res = await fetch(`${baseUrl}/surveys/?populate=*`, fetchConfig)
         handleErrors(res)
         const json = await res.json();
         console.log('fetchSurveys', JSON.stringify(json, null, 2))
@@ -61,7 +64,7 @@ export const api = {
     },
     fetchSurvey: async (id: string, includeQuestions: boolean): Promise<SingleResponse<Survey>> => {
         const populate = includeQuestions ? '?populate=*' : ''
-        const res = await fetch(`${baseUrl}/surveys/${id}/${populate}`, { headers })
+        const res = await fetch(`${baseUrl}/surveys/${id}/${populate}`, fetchConfig)
         handleErrors(res)
         return await res.json();
     }
