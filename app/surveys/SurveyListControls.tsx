@@ -3,7 +3,7 @@
 import { MagnifyingGlassIcon, CheckIcon, PlayIcon, StopIcon, ArchiveBoxIcon, ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 import { Card, Flex, TextInput, Toggle, ToggleItem } from "@tremor/react";
 
-export default function SurveyListFilters(props: { color: 'red' | 'blue' | 'amber' }) {
+export default function SurveyListControls(props: { color: 'red' | 'blue' | 'amber' }) {
     const { color } = props;
     return (
         <Card className='space-y-3'>

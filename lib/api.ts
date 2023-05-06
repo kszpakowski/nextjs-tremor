@@ -38,7 +38,7 @@ type Question = {
     }
 }
 
-type Survey = {
+export type Survey = {
     id: number,
     attributes: {
         name: string,
