@@ -36,22 +36,16 @@ const dateFormatter = (dateString: string) => {
 
 const progressFn = (survey: Survey): number => {
     const { startDate, endDate, id } = survey;
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const now = new Date();
+    const start = new Date(startDate).getTime();
+    const end = new Date(endDate).getTime();
+    const now = new Date().getTime();
 
-    if (end < now) {
-        return 100;
-    }
+    var durationInDays = (end - start) / (1000 * 3600 * 24);
+    var daysFromStart = (now - start) / (1000 * 3600 * 24);
 
-    if (start > now) {
-        return 0;
-    }
+    const percent = Math.min(Math.max(Math.round(daysFromStart / durationInDays * 100), 0), 100);
 
-    var durationInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
-    var daysFromStart = (now.getTime() - start.getTime()) / (1000 * 3600 * 24);
-
-    return Math.round(durationInDays / daysFromStart)
+    return percent;
 }
 
 export default function SurveyListItem(props: SurveyListItemProps) {
