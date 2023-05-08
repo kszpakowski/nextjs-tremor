@@ -1,6 +1,6 @@
 import { Question } from "../../../../../lib/api"
-import ChoiceQuestionEntry from "./ChoiceQuestionEntry"
-import OpenQuestionEntry from "./OpenQuestionEntry"
+import ChoiceQuestionEdit from "./ChoiceQuestionEdit"
+import OpenQuestionEdit from "./OpenQuestionEdit"
 
 type QuestionEditProps = {
     question: Question;
@@ -12,7 +12,7 @@ export default function QuestionEdit(props: QuestionEditProps) {
     const { question, order } = props;
     if (question.attributes.type === "open") {
         return (
-            <OpenQuestionEntry question={{
+            <OpenQuestionEdit question={{
                 id: question.id,
                 text: question.attributes.questionText,
             }} order={order} />
@@ -21,7 +21,7 @@ export default function QuestionEdit(props: QuestionEditProps) {
 
     if (question.attributes.type === "single_choice") {
         return (
-            <ChoiceQuestionEntry question={{
+            <ChoiceQuestionEdit question={{
                 id: question.id,
                 text: question.attributes.questionText,
                 choices: question.attributes.choices!.data.map(choice => ({

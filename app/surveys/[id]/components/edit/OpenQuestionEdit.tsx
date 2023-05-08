@@ -9,12 +9,12 @@ type Question = {
     required?: boolean
 }
 
-type QuestionEntryProps = {
+type OpenQuestionEditProps = {
     question: Question;
     order: number;
 };
 
-export default function OpenQuestionEntry(props: QuestionEntryProps) {
+export default function OpenQuestionEdit(props: OpenQuestionEditProps) {
 
     const { question, order } = props
 
@@ -31,7 +31,7 @@ export default function OpenQuestionEntry(props: QuestionEntryProps) {
                 <Icon icon={TrashIcon}></Icon>
             </Flex>
             <Flex>
-                <Icon icon={ArrowsUpDownIcon} className="invisible"></Icon>Ū
+                <Icon icon={ArrowsUpDownIcon} className="invisible"></Icon>
                 <Text className="mr-3 invisible">{order}.</Text>
                 <TextInput placeholder="Wprowadź odpowiedź" disabled />
                 <Icon icon={TrashIcon} className="invisible"></Icon>

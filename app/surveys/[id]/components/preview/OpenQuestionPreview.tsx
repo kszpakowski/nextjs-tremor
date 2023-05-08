@@ -1,5 +1,4 @@
-import { ArrowsUpDownIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { Flex, TextInput, Text, Icon } from "@tremor/react";
+import { Flex, TextInput, Text } from "@tremor/react";
 
 type Question = {
     id: number;

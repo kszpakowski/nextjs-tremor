@@ -12,12 +12,12 @@ type Question = {
     }>
 }
 
-type QuestionEntryProps = {
+type ChoiceQuestionEditProps = {
     question: Question;
     order: number;
 };
 
-export default function OpenQuestionEntry(props: QuestionEntryProps) {
+export default function ChoiceQuestionEdit(props: ChoiceQuestionEditProps) {
 
     const { question, order } = props
 
