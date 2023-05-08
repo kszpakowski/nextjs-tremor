@@ -13,7 +13,6 @@ export default async function NewSurveysPage({ params }: {
             <Grid className="mb-6 gap-6" numColsSm={3} numColsLg={3}>
                 <Col numColSpan={3} numColSpanLg={3}>
                     <Tabs survey={survey.data}></Tabs>
-                    {/* <Subtitle className="whitespace-pre-wrap">{JSON.stringify(survey, null, 2)}</Subtitle> */}
                 </Col>
             </Grid>
         </main>
