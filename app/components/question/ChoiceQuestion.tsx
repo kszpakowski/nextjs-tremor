@@ -1,8 +1,9 @@
 import { ArrowsUpDownIcon, TrashIcon } from "@heroicons/react/24/outline"
-import { Flex, Icon, Text, TextInput } from "@tremor/react"
+import { Flex, Icon, TextInput } from "@tremor/react"
 import { ChoiceQuestion } from "../../../types/Question"
 import Checkbox from "../checkbox/Checkbox"
 import { useState } from "react"
+import QuestionText from "./QuestionText"
 
 interface ChoiceQuestionProps {
     question: ChoiceQuestion,
@@ -14,7 +15,6 @@ interface ChoiceQuestionProps {
 export default function ChoiceQuestion(props: ChoiceQuestionProps) {
 
     const { question, order, editMode } = props
-    const [text, setText] = useState(question.text)
     const [otherEnabled, setOtherEnabled] = useState(false)
     const [multipleAnswer, setmultipleAnswer] = useState(false)
 
@@ -22,18 +22,7 @@ export default function ChoiceQuestion(props: ChoiceQuestionProps) {
         <Flex className="flex-col gap-6">
 
             {/* Question text */}
-            {editMode ? (
-                <Flex>
-                    <Icon icon={ArrowsUpDownIcon}></Icon>
-                    <Text className="mr-3">{order}.</Text>
-                    <TextInput className="" value={text} onChange={(e) => setText((e.target as HTMLInputElement).value)} />
-                    <Icon icon={TrashIcon}></Icon>
-                </Flex>
-            ) : (
-                <Flex>
-                    <Text>{order}. {question.text}</Text>
-                </Flex>
-            )}
+            <QuestionText question={question} editMode={editMode} order={order} />
 
             {/* Choices */}
             {editMode ? (

@@ -3,6 +3,7 @@ import { Flex, Icon, Text, TextInput } from "@tremor/react"
 import { useState } from "react"
 import { OpenQuestion } from "../../../types/Question"
 import Checkbox from "../checkbox/Checkbox"
+import QuestionText from "./QuestionText"
 
 interface OpenQuestionProps {
     question: OpenQuestion,
@@ -13,7 +14,6 @@ interface OpenQuestionProps {
 
 export default function OpenQuestion(props: OpenQuestionProps) {
     const { question, order, editMode } = props
-    const [text, setText] = useState(question.text)
 
     const [required, setRequired] = useState(question.required || false)
     const [long, setLong] = useState(false)
@@ -22,18 +22,7 @@ export default function OpenQuestion(props: OpenQuestionProps) {
         <Flex className="flex-col gap-6">
 
             {/* Question text */}
-            {editMode ? (
-                <Flex>
-                    <Icon icon={ArrowsUpDownIcon}></Icon>
-                    <Text className="mr-3">{order}.</Text>
-                    <TextInput className="" value={text} onChange={(e) => setText((e.target as HTMLInputElement).value)} />
-                    <Icon icon={TrashIcon}></Icon>
-                </Flex>
-            ) : (
-                <Flex>
-                    <Text>{order}. {question.text}</Text>
-                </Flex>
-            )}
+            <QuestionText question={question} editMode={editMode} order={order}/>
 
             {/* Answer */}
             {editMode ? (
