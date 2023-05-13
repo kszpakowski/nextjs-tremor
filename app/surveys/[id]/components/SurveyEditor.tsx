@@ -1,12 +1,12 @@
 import { Text, TextInput, DateRangePicker, Flex, Button, Title } from "@tremor/react";
-import { Survey } from "../../../../lib/api";
 import { useState } from "react";
-import QuestionEdit from "./edit/QuestionEdit";
+import { Survey } from "../../../../types/Survey";
+import Question from "../../../components/question/Question";
 
 export default function SurveyEditor(props: { survey: Survey }) {
     const { survey } = props
 
-    const [name, setName] = useState(survey.attributes.name)
+    const [name, setName] = useState(survey.name)
     return (
         <Flex className="flex-col gap-6" alignItems="start">
             <Title>Konfiguracja</Title>
@@ -28,8 +28,8 @@ export default function SurveyEditor(props: { survey: Survey }) {
 
             <Title>Pytania</Title>
             <Flex className="flex-col gap-8">
-                {props.survey.attributes.questions?.data.map((q, i) =>
-                    (<QuestionEdit question={q} order={i+1}/>)
+                {survey.questions?.map((q, i) =>
+                    (<Question question={q} order={i+1} editMode/>)
                 )}
             </Flex>
 

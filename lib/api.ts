@@ -1,4 +1,6 @@
 import { stringify } from "qs"
+import { Survey } from "../types/Survey"
+import { SurveyMapper } from "./mapper"
 
 const apiToken = process.env.API_TOKEN
 const baseUrl = process.env.API_URL
@@ -39,7 +41,7 @@ export type Choice = {
     }
 }
 
-export type Question = {
+export type QuestionDto = {
     id: number,
     attributes: {
         questionText: string,
@@ -50,7 +52,7 @@ export type Question = {
     }
 }
 
-export type Survey = {
+export type SurveyDto = {
     id: number,
     attributes: {
         name: string,
@@ -59,7 +61,7 @@ export type Survey = {
         createdAt: string,
         updatedAt: string,
         questions?: {
-            data: Array<Question>
+            data: Array<QuestionDto>
         }
     }
 }
@@ -67,14 +69,14 @@ export type Survey = {
 // https://docs.strapi.io/dev-docs/api/rest/populate-select#relations--media-fields
 export const api = {
 
-    fetchSurveys: async (): Promise<PageResponse<Survey>> => {
+    fetchSurveys: async (): Promise<PageResponse<SurveyDto>> => {
         const res = await fetch(`${baseUrl}/surveys/?populate=*`, fetchConfig)
         handleErrors(res)
         const json = await res.json();
         console.log('fetchSurveys', JSON.stringify(json, null, 2))
         return json;
     },
-    fetchSurvey: async (id: string, includeQuestions: boolean): Promise<SingleResponse<Survey>> => {
+    fetchSurvey: async (id: string, includeQuestions: boolean): Promise<SingleResponse<SurveyDto>> => {
 
         const query = stringify({
             populate: {
@@ -94,5 +96,23 @@ export const api = {
         console.log('fetchSurvey', JSON.stringify(json, null, 2))
 
         return await json;
+    },
+    fetchSurveyMapped: async (id: string, includeQuestions: boolean): Promise<Survey> => {
+
+        const query = stringify({
+            populate: {
+                questions: {
+                    populate: ["choices"]
+                }
+            }
+        },
+            {
+                encodeValuesOnly: true, // prettify URL
+            })
+        const res = await fetch(`${baseUrl}/surveys/${id}?${query}`, fetchConfig)
+        handleErrors(res)
+        const json: SingleResponse<SurveyDto> = await res.json();
+        // console.log('fetchSurvey', JSON.stringify(json, null, 2))
+        return SurveyMapper.mapFromDto(json.data);
     }
 }

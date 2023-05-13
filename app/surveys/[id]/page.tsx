@@ -6,13 +6,14 @@ export default async function NewSurveysPage({ params }: {
     params: { id: string }
 }) {
 
-    const survey = await api.fetchSurvey(params.id, true)
+    const survey = await api.fetchSurveyMapped(params.id, true)
+
     return (
         <main className="p-4 md:p-10 mx-auto max-w-7xl">
 
             <Grid className="mb-6 gap-6" numColsSm={3} numColsLg={3}>
                 <Col numColSpan={3} numColSpanLg={3}>
-                    <Tabs survey={survey.data}></Tabs>
+                    <Tabs survey={survey}></Tabs>
                 </Col>
             </Grid>
         </main>
