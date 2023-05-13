@@ -12,7 +12,7 @@ export const SurveyMapper = {
                 return {
                     id: dto.id,
                     type,
-                    required: false,
+                    required: false, // todo
                     text: dto.attributes.questionText
                 }
             } else {
@@ -24,8 +24,8 @@ export const SurveyMapper = {
                     choices: dto.attributes.choices && dto.attributes.choices.data.map(chDto => ({
                         text: chDto.attributes.choiceText
                     })) || [],
-                    otherEnabled: false,
-                    multipleAnswers: false
+                    otherEnabled: false, // todo
+                    multipleAnswers: false // todo
                 }
             }
         })

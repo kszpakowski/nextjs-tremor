@@ -4,18 +4,18 @@ interface QuestionBase {
     required: boolean
 }
 
-interface OpenQuestion {
+export type OpenQuestion = {
     type: "open"
-}
+} & QuestionBase
 
 
-interface ChoiceQuestion {
+export type ChoiceQuestion = {
     type: "choice"
     choices: Array<{
         text: string
     }>,
     otherEnabled: boolean,
     multipleAnswers: boolean
-}
+} & QuestionBase
 
-export type Question = QuestionBase & (OpenQuestion | ChoiceQuestion);
+export type Question = OpenQuestion | ChoiceQuestion;
