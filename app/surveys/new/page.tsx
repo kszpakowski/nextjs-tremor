@@ -2,11 +2,14 @@
 
 import { Grid, Col, Card, Flex, TextInput, Text, Title, Button, DateRangePicker } from "@tremor/react";
 
+import { useRouter } from 'next/navigation';
+
 import { useState } from "react";
 import EditModal from "./EditModal";
 import { Question } from "./types";
 import QuestionItem from "./QuestionItem";
 import DeleteModal from "./DeleteModal";
+import { CreateSurveyRes } from "../../../pages/api/surveys";
 
 const initialQuestions: Array<Question> = [{
     id: "1",
@@ -27,9 +30,11 @@ const initialQuestions: Array<Question> = [{
 }]
 
 export default function NewSurveysPage() {
+    const router = useRouter()
     const [questions, setQuestions] = useState(initialQuestions)
     const [deleteQuestion, setDeleteQuestion] = useState<Question | null>(null)
     const [editQuestion, setEditQuestion] = useState<Question | null>(null)
+    const [newSurveyName, setNewSurveyName] = useState("")
 
     const moveUp = (question: { id: string, title: string, order: number }) => {
         if (question.order === 0) {
@@ -80,14 +85,29 @@ export default function NewSurveysPage() {
         setQuestions(newQuestions)
     }
 
+    async function addSurvey(name: string): Promise<void> {
+        console.log('name', newSurveyName)
+        const survey = await fetch('/api/surveys', {
+            method: 'POST',
+            headers: { "Content-Type": 'application/json' },
+            body: JSON.stringify({
+                name: name,
+            })
+        }).then(res => res.json()) as CreateSurveyRes;
+
+        console.log('resp', survey)
+        router.push(`/surveys/${survey.id}`) // TODO navigate to edit tab, maybe use trpc?
+    }
+
     return (
         <main className="p-4 md:p-10 mx-auto">
             <Grid className="mb-6 gap-6" numColsSm={4} numColsLg={4}>
-                <Col numColSpan={1} numColSpanLg={1}>
+                <Col numColSpan={1}></Col>
+                <Col numColSpan={2} numColSpanLg={2}>
                     <Card className='space-y-3'>
                         <Title>Nowa ankieta</Title>
                         <Text>Nazwa</Text>
-                        <TextInput placeholder="Nazwa" />
+                        <TextInput placeholder="Nazwa" value={newSurveyName} onChange={(e) => setNewSurveyName((e.target as HTMLInputElement).value)} />
 
                         <Text>Data rozpoczęcia</Text>
                         <DateRangePicker className="max-w-sm mx-auto" enableDropdown={false} />
@@ -95,13 +115,12 @@ export default function NewSurveysPage() {
                         <Text>Data zakończenia</Text>
                         <DateRangePicker className="max-w-sm mx-auto" enableDropdown={false} />
 
-                        <Flex>
-                            <Button variant="secondary">Dodaj pytanie</Button>
-                            <Button>Zapisz</Button>
+                        <Flex justifyContent="end">
+                            <Button onClick={() => addSurvey(newSurveyName)}>Zapisz</Button>
                         </Flex>
                     </Card>
                 </Col>
-                <Col numColSpan={3} numColSpanLg={3}>
+                {/* <Col numColSpan={3} numColSpanLg={3}>
                     <Card className='space-y-8'>
                         {questions
                             .sort((a, b) => a.order - b.order)
@@ -116,7 +135,7 @@ export default function NewSurveysPage() {
                                 ></QuestionItem>
                             ))}
                     </Card>
-                </Col>
+                </Col> */}
                 {deleteQuestion && (
                     <DeleteModal
                         question={deleteQuestion}

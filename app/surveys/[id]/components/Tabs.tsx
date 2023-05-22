@@ -4,7 +4,6 @@ import { Card, Tab, TabList, Title } from "@tremor/react";
 import { useState } from "react";
 import SurveyPreview from "./SurveyPreview";
 import SurveyEditor from "./SurveyEditor";
-import { SurveyDto } from "../../../../lib/api";
 import { Survey } from "../../../../types/Survey";
 
 export default function Tabs(props: { survey: Survey }) {
